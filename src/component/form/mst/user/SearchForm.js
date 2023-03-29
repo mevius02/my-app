@@ -1,11 +1,18 @@
 import * as React from "react";
-import axios from "axios";
-import { Row, Col, Form } from "react-bootstrap";
+import { Row, Col, Modal, Form } from "react-bootstrap";
 import Button01 from "../../../button/Button01";
 import * as constants from "../../../../constants";
 
 function SearchForm(props) {
-  const { searchUserList, downloadCsv, searchParams, setSearchParams } = props;
+  const {
+    searchUserList,
+    searchParams,
+    setSearchParams,
+    downloadCsv,
+    uploadCsv,
+    modalShowUploadCsv,
+    modalCloseUploadCsv,
+  } = props;
   const [enumList, setEnumList] = React.useState([]);
 
   // React.useEffect(() => {
@@ -26,7 +33,7 @@ function SearchForm(props) {
   return (
     <Form onSubmit={searchUserList}>
       <Row>
-        {/* ■■■■■■■■■■ ユーザID ■■■■■■■■■■ */}
+        {/* ■■■■■■■■■■ [項目]ユーザID ■■■■■■■■■■ */}
         <Col xs={12} sm={4} lg={2} xl={2} xx={1}>
           <Form.Group>
             <Form.Label htmlFor="userId">{constants.USER_ID}</Form.Label>
@@ -41,7 +48,7 @@ function SearchForm(props) {
             />
           </Form.Group>
         </Col>
-        {/* ■■■■■■■■■■ ユーザ名 ■■■■■■■■■■ */}
+        {/* ■■■■■■■■■■ [項目]ユーザ名 ■■■■■■■■■■ */}
         <Col xs={12} sm={4} lg={2} xl={2} xx={1}>
           <Form.Group>
             <Form.Label htmlFor="userNm">{constants.USER_NM}</Form.Label>
@@ -69,20 +76,48 @@ function SearchForm(props) {
       </Row>
       <Row>
         <Col className="d-flex justify-content-between mt-2">
-          {/* ■■■■■■■■■■ 検索ボタン ■■■■■■■■■■ */}
+          {/* ■■■■■■■■■■ [ボタン]検索 ■■■■■■■■■■ */}
           <Button01
             variant={constants.PRIMARY}
             type={constants.SUBMIT}
             label={constants.SEARCH}
             onClick={searchUserList}
           ></Button01>
-          {/* ■■■■■■■■■■ CSVダウンロードボタン ■■■■■■■■■■ */}
+          {/* ■■■■■■■■■■ [ボタン]CSVダウンロード ■■■■■■■■■■ */}
           <Button01
             variant={constants.SECONDARY}
             type={constants.BUTTON}
             label={constants.CSV}
             onClick={downloadCsv}
           ></Button01>
+          {/* ■■■■■■■■■■ [ボタン]CSVアップロード ■■■■■■■■■■ */}
+          <Button01
+            variant={constants.INFO}
+            type={constants.BUTTON}
+            label={`${constants.CSV}アップロード`}
+            onClick={modalShowUploadCsv}
+          ></Button01>
+          {/* ■■■■■■■■■■ [モーダル]CSVアップロード ■■■■■■■■■■ */}
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Modal title</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              I will not close if you click outside me. Don't even try to press
+              escape key.
+            </Modal.Body>
+            <Modal.Footer>
+              <Button01 variant="secondary" onClick={modalCloseUploadCsv}>
+                Close
+              </Button01>
+              <Button01 variant="primary">Understood</Button01>
+            </Modal.Footer>
+          </Modal>
         </Col>
       </Row>
     </Form>

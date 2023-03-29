@@ -18,6 +18,10 @@ function MstUserPage() {
     userNm: "",
     // enabledFlg: true,
   });
+  // CSVアップロードモーダル表示フラグ
+  const [showModalUploadCsv, setShowModalUploadCsv] = useState(false);
+  const modalShowUploadCsv = () => setShowModalUploadCsv(true);
+  const modalCloseUploadCsv = () => setShowModalUploadCsv(false);
 
   // 検索処理
   // ==================================================
@@ -92,9 +96,11 @@ function MstUserPage() {
               <Card className="col-12 mb-2 p-3">
                 <SearchForm
                   searchUserList={searchUserList}
-                  downloadCsv={downloadCsv}
                   searchParams={searchParams}
                   setSearchParams={setSearchParams}
+                  downloadCsv={downloadCsv}
+                  modalShowUploadCsv={modalShowUploadCsv}
+                  modalCloseUploadCsv={modalCloseUploadCsv}
                 />
               </Card>
             </Col>

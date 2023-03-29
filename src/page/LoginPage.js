@@ -33,7 +33,12 @@ function LoginPage() {
     await axios
       .get(url, { params: loginParams })
       .then((response) => {
-        if (response.status === 200 && response.data.userId !== null) {
+        if (
+          response.status === 200 &&
+          response.data.userId !== undefined &&
+          response.data.userId !== null
+        ) {
+          console.log(response.data.userId);
           // 認証情報をContextにセット
           setAuthInfo(response.data);
           navigate(constants.MAP_URL_HOME, { state: { redirect: true } });
