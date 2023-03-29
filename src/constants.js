@@ -22,6 +22,7 @@ export const MAP_URL_MST_USER = "/mstUser";
 export const MAP_URL_USERDETAIL = "/userdetail";
 export const MAP_URL_SEARCH_USER_LIST = "/searchUserList";
 export const MAP_URL_DOWNLOAD_CSV = "/downloadCsv";
+export const MAP_URL_UPLOAD_CSV = "/uploadCsv";
 export const MAP_URL_GET_ENUM = "/getEnum";
 export const MAP_URL_ENABLED_FLG = "/enabledFlg";
 // 画面遷移URL(ERROR)

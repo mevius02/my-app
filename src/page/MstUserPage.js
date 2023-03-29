@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card, Modal } from "react-bootstrap";
 import Spinner01 from "../component/spinner/Spinner01";
 import SearchForm from "../component/form/mst/user/SearchForm";
 import SearchList from "../component/list/mst/user/SearchList";
@@ -18,8 +18,11 @@ function MstUserPage() {
     userNm: "",
     // enabledFlg: true,
   });
+  // CSVファイル
+  const [csvFile, setCsvFile] = React.useState([]);
+  const fileReader = new FileReader();
   // CSVアップロードモーダル表示フラグ
-  const [showModalUploadCsv, setShowModalUploadCsv] = useState(false);
+  const [showModalUploadCsv, setShowModalUploadCsv] = React.useState(false);
   const modalShowUploadCsv = () => setShowModalUploadCsv(true);
   const modalCloseUploadCsv = () => setShowModalUploadCsv(false);
 
@@ -47,22 +50,47 @@ function MstUserPage() {
   // CSVダウンロード処理
   // ==================================================
   const downloadCsv = async () => {
-    const response = await axios.get(
+    const url =
       constants.LOCALHOST_8080 +
-        constants.MAP_URL_API +
-        constants.MAP_URL_DOWNLOAD_CSV,
-      {
-        params: searchParams,
-        responseType: "blob",
-      }
-    );
+      constants.MAP_URL_API +
+      constants.MAP_URL_DOWNLOAD_CSV;
+    const response = await axios.get(url, {
+      params: searchParams,
+      responseType: "blob",
+    });
     const blob = new Blob([response.data], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
+    const csvUrl = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.href = url;
+    link.href = csvUrl;
     link.download = "userList.csv";
     link.click();
     window.URL.revokeObjectURL(url);
+  };
+
+  // CSVアップロード処理
+  // ==================================================
+  const uploadCsv = async () => {
+    setIsLoading(true);
+    fileReader.readAsText(csvFile);
+    const url =
+      constants.LOCALHOST_8080 +
+      constants.MAP_URL_API +
+      constants.MAP_URL_UPLOAD_CSV;
+    const formData = new FormData();
+    formData.append("csvFile", csvFile);
+    await axios
+      .post(url, formData)
+      .then((response) => {
+        if (response.data === "SUCCESS") {
+          modalCloseUploadCsv();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -99,6 +127,10 @@ function MstUserPage() {
                   searchParams={searchParams}
                   setSearchParams={setSearchParams}
                   downloadCsv={downloadCsv}
+                  uploadCsv={uploadCsv}
+                  csvFile={csvFile}
+                  setCsvFile={setCsvFile}
+                  showModalUploadCsv={showModalUploadCsv}
                   modalShowUploadCsv={modalShowUploadCsv}
                   modalCloseUploadCsv={modalCloseUploadCsv}
                 />

@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Row, Col, Modal, Form } from "react-bootstrap";
-import Button01 from "../../../button/Button01";
 import * as constants from "../../../../constants";
+import UploadCsvModal from "../../../modal/user/UploadCsvModal";
+import Button01 from "../../../button/Button01";
 
 function SearchForm(props) {
   const {
@@ -10,10 +11,12 @@ function SearchForm(props) {
     setSearchParams,
     downloadCsv,
     uploadCsv,
+    setCsvFile,
+    showModalUploadCsv,
     modalShowUploadCsv,
     modalCloseUploadCsv,
   } = props;
-  const [enumList, setEnumList] = React.useState([]);
+  // const [enumList, setEnumList] = React.useState([]);
 
   // React.useEffect(() => {
   //   axios
@@ -98,26 +101,12 @@ function SearchForm(props) {
             onClick={modalShowUploadCsv}
           ></Button01>
           {/* ■■■■■■■■■■ [モーダル]CSVアップロード ■■■■■■■■■■ */}
-          <Modal
-            show={show}
-            onHide={handleClose}
-            backdrop="static"
-            keyboard={false}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Modal title</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              I will not close if you click outside me. Don't even try to press
-              escape key.
-            </Modal.Body>
-            <Modal.Footer>
-              <Button01 variant="secondary" onClick={modalCloseUploadCsv}>
-                Close
-              </Button01>
-              <Button01 variant="primary">Understood</Button01>
-            </Modal.Footer>
-          </Modal>
+          <UploadCsvModal
+            uploadCsv={uploadCsv}
+            setCsvFile={setCsvFile}
+            showModalUploadCsv={showModalUploadCsv}
+            modalCloseUploadCsv={modalCloseUploadCsv}
+          />
         </Col>
       </Row>
     </Form>
